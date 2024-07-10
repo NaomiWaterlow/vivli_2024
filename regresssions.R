@@ -1,5 +1,6 @@
 library(data.table)
 library(lmtest)
+library(lme4)
 
 dummy_data <- data.table(
   resistance = c(0,1,0,1,1,1), 
@@ -25,6 +26,25 @@ model2 <- glm(resistance~sex+age_group+bug+drug+country+(sex*country), data = du
 # Is the model with interaction better than the one without
 # I.e. is there stat evidence for interaction
 lrtest(model1,model2)
+
+
+# but actually we want it to be multi level 
+
+# Model 1
+glmer(resistance ~ age_group + sex + (1|country),
+      data = dummy_data, 
+      family = "binomial")
+
+# Model 2
+glmer(resistance ~ age_group + sex + sex*country + (1|country),
+      data = dummy_data, 
+      family = "binomial")
+
+# Model 3 
+glmer(resistance ~ age_group + sex + sex*country + (births + 1|country), 
+      data = dummy_data, 
+      family = "binomial")
+
 
 
 
