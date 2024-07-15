@@ -56,7 +56,7 @@ for(bug_specific in unique_bugs){
    
    model_list[[name_use]] <- list(Model_0, Model_1, Model_2, Model_3) 
    
-   
+   saveRDS(model_list, file = paste0("Models_",drug_specific,"_",bug_specific,".RDS"))
   }
 }
 
