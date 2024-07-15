@@ -10,12 +10,12 @@ library(tidyverse); library(readxl); library(data.table); library(countrycode)
 list.files("data") # Should be 6 files
 
 ## ATLAS
-suppressWarnings(atlas <- read_csv("data/2023_06_15 atlas_antibiotics.csv"))
+suppressWarnings(atlas <- read_csv("data/2024_05_28 atlas_antibiotics.csv"))
 # Warnings about column types, can be ignored
 colnames(atlas)
 # Check age groups
 unique(atlas$`Age Group`)
-# 7 age-groups: 0-2/3-12/13-18/19-64/65-84/85+
+# 7 age-groups: 0-2/3-12/13-18/19-64/65-84/85+ # And Unknown (gets removed later)
 unique(atlas$Gender)
 # Gender has NAs - remove these later
 # Explore antibiotic data 
@@ -66,7 +66,6 @@ unique(atlas_clean_nona$year)
 ## Clean organism for top 3 bugs
 u <- unique(atlas_clean_nona$organism)
 table(atlas_clean_nona$organism) %>% as.data.frame() %>% arrange(desc(Freq))
-# 1) S aureus = 3,876,703 / 2) E coli = 3,364,369 / 3) K pneu = 3,035,630
 
 # S aureus
 u[str_which(u, "aureus")] # yes
@@ -103,6 +102,7 @@ abx <- unique(atlas_clean_focus_b$antibiotic)
 # Look at top antibiotics overall
 table(atlas_clean_focus_b$antibiotic) %>% as.data.frame() %>% arrange(desc(Freq))
 # 1) Tigecycline = 848,612 / 2) Levofloxacin = 832,186 / 3) Ampicillin = 789,534
+
 
 # Now look at top antibiotics by bug AND drug
 atlas_clean_focus_bd <- atlas_clean_focus_b %>% 
@@ -169,7 +169,7 @@ atlas_clean_focus_saec_age <- atlas_clean_focus_saec %>%
 # Check
 unique(atlas_clean_focus_saec_age$age)
 # Factor age variable
-atlas_clean_focus_saec_age$age_group <- factor(atlas_clean_focus_saec_age$age_group, 
+atlas_clean_focus_saec_age$age <- factor(atlas_clean_focus_saec_age$age, 
                                                levels = c("0 to 2 Years","3 to 12 Years", "13 to 18 Years",
                                                           "19 to 64 Years", "65 to 84 Years", "85 and Over"))
 

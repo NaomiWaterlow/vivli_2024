@@ -8,11 +8,11 @@ library(tidyverse); library(readxl); library(data.table)
 
 ## Read in data 
 # Data inputs need to be in file called "data"
-list.files("data") # should be 6 files
+list.files("data") 
 
 #####******************* Look at datasets - decide which can use ******************#################
 ###### (1) ATLAS
-suppressWarnings(atlas <- read_csv("data/2023_06_15 atlas_antibiotics.csv"))
+suppressWarnings(atlas <- read_csv("data/2024_05_28 atlas_antibiotics.csv"))
 #warnings about column types, can be ignored
 colnames(atlas) # metadata and antibiotic MIC eg age gender, source, country, in/out patient
 unique(atlas$Year) # latest data from 2021 
