@@ -2,59 +2,63 @@
 library(lme4)
 library(data.table)
 
-#TODO
-# check that the model extract the random effects as well as the fixed ones for model 2
-# add model 3
 
-unique_bugs <- unique(dummy_data$bug)
-unique_drugs <- unique(dummy_data$drug)
-countries <- unique(dummy_data$country)
+input_data <- data.table(read.csv("data/combined_atlas.csv"))
 
-# loop over bugs and drugs
+
+unique_bugs <- unique(input_data$species)
+unique_drugs <- unique(input_data$antibiotic)
+countries <- unique(input_data$country)
+
+model_list <- list()
+
+# loop over bugs 
 for(bug_specific in unique_bugs){
-  for(drug_specfic in unique_drugs){
+   
+   # subset to bug data
+   data_subset <- input_data[species ==bug_specific, ]
+   
+   # loop over drugs
+  for(drug_specific in unique(data_subset$antibiotic)){
     
+     # print for tracking
     print(paste0("model running is: ", bug_specific, " , ", drug_specific))
-    
-    # subset to drug and bug data
-    data_subset <- dummy_data[drug == drug_specific & bug ==bug_specific, ]
-    
-    # Model 1
-   Model_1 <-  glmer(resistance ~ age_group + sex + (1|country),
+     
+     #subset to drug data
+     data_subset <- data_subset[antibiotic ==drug_specific, ]
+
+     # Model 1
+     Model_0 <-  glmer(mic_label ~ 1 + (1|country),
+                       data = data_subset, 
+                       family = "binomial")
+     
+     print("Model 0 complete")
+         
+   # Model 1
+   Model_1 <-  glmer(mic_label ~ 1 +age + gender + (1|country),
           data = data_subset, 
           family = "binomial")
    
-   # extract data
-   model_output_estimate <- unname(c(bug_specific, drug_specific, 1, "estimate", coef(summary(Model_1))[,"Estimate"]))
-   model_output_sd <- unname(c(bug_specific, drug_specific, 1, "s_d", coef(summary(Model_1))[,"Std. Error"]))
-   model_temp <- rbind(model_output_estimate, model_output_sd)
-   if(drug_specific== unique_drugs[1] & bug_specific== unique_bugs[1]){
-     model_1_output <- model_temp
-     colnames(model_1_output) <- c("bug", "drug", "model", "output",names(coef(summary(Model_1))[,"Estimate"]) )} else{ 
-     model_1_output <- rbind(model_1_output, model_temp)}
-    
-   #  # Model 2
-   Model_2 <- glmer(resistance ~ age_group + sex + sex*country + (1|country),
+   print("Model 1 complete")
+   # Model 2
+   Model_2 <- glmer(mic_label ~ age + gender + gender*country + (1|country),
           data = data_subset,
           family = "binomial")
-   # extract data
-   model_output_estimate <- unname(c(bug_specific, drug_specific, 2, "estimate", coef(summary(Model_2))[,"Estimate"]))
-   model_output_sd <- unname(c(bug_specific, drug_specific, 2, "s_d", coef(summary(Model_2))[,"Std. Error"]))
-   model_temp <- rbind(model_output_estimate, model_output_sd)
    
-   if(drug_specific== unique_drugs[1] & bug_specific== unique_bugs[1]){
-     model_2_output <- model_temp
-     colnames(model_2_output) <- c("bug", "drug", "model", "output",names(coef(summary(Model_2))[,"Estimate"]) )} else{ 
-       model_2_output <- rbind(model_2_output, model_temp)}
-    
-    # # Model 3 
-    # glmer(resistance ~ age_group + sex + sex*country + (births + 1|country), 
-    #       data = data_subset, 
-    #       family = "binomial")
+   print("Model 2 complete")
+   # Model 3 # need to add country level factors! 
+   Model_3 <- glmer(mic_label ~ age + gender + gender*country + (1 + birth_rate + c_section + GDP + primary_completion_female_over_male|country) ,
+                    data = data_subset,
+                    family = "binomial")
+   print("Model 3 complete")
+   
+   name_use <- paste0(bug_specific, " - ", drug_specific)
+   
+   model_list[[name_use]] <- list(Model_0, Model_1, Model_2, Model_3) 
+   
    
   }
 }
 
 
-model_1_output
-model_2_output
+saveRDS(model_list, file = "Models.RDS")
