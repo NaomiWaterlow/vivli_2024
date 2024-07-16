@@ -12,6 +12,13 @@ countries <- unique(input_data$country)
 
 model_list <- list()
 
+input_data$age <- factor(input_data$age, levels = c("0 to 2 Years" , 
+                                                    "3 to 12 Years", 
+                                                    "13 to 18 Years",
+                                                    "19 to 64 Years", 
+                                                    "65 to 84 Years",
+                                                    "85 and Over"))
+
 # loop over bugs 
 for(bug_specific in unique_bugs){
    
@@ -20,12 +27,21 @@ for(bug_specific in unique_bugs){
    
    # loop over drugs
   for(drug_specific in unique(data_subset$antibiotic)){
+     
+     
+
     
      # print for tracking
     print(paste0("model running is: ", bug_specific, " , ", drug_specific))
      
      #subset to drug data
      data_subset <- data_subset[antibiotic ==drug_specific, ]
+     
+     #only include those countries with 1000 or more samples
+     # and remove uknown age
+     data_subset[, country_total := .N, by = "country"]
+     data_subset <- data_subset[country_total>5000 & age != "Unknown",]
+     
 
      # Model 1
      Model_0 <-  glmer(mic_label ~ 1 + (1|country),
@@ -41,7 +57,7 @@ for(bug_specific in unique_bugs){
    
    print("Model 1 complete")
    # Model 2
-   Model_2 <- glmer(mic_label ~ age + gender + gender*country + (1|country),
+   Model_2 <- glmer(mic_label ~ age + gender + gender*country+ (1|country) ,
           data = data_subset,
           family = "binomial")
    
