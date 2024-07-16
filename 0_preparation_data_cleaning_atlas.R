@@ -10,7 +10,7 @@ library(tidyverse); library(readxl); library(data.table); library(countrycode)
 list.files("data") # Should be 6 files
 
 ## ATLAS
-suppressWarnings(atlas <- read_csv("data/2024_05_28 atlas_antibiotics.csv"))
+suppressWarnings(atlas <- read_csv("data/gender_/ATLAS_Antibiotics/2024_05_28 atlas_antibiotics.csv"))
 # Warnings about column types, can be ignored
 colnames(atlas)
 # Check age groups
