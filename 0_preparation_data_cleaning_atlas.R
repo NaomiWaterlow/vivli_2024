@@ -112,20 +112,36 @@ atlas_clean_focus_bd <- atlas_clean_focus_b %>%
   group_by(organism_clean) %>% 
   arrange(desc(number_isolates))
 
+
 # Top antibiotics for S aureus
 head(atlas_clean_focus_bd %>% filter(organism_clean=="Staphylococcus aureus"))
 # =1) Levofloxacin, Vancomycin = 146470 / 3) Linezolid = 146470 (but also Tigecycline!)
+
+# Now look at top antibiotics by bug AND drug and resistance level 
+atlas_clean_focus_bd_r <- atlas_clean_focus_b %>% 
+  group_by(organism_clean, antibiotic,mic) %>%
+  summarise(nn = n()) %>% 
+  pivot_wider(names_from = mic, values_from = nn) %>%
+  summarise(total = sum(Intermediate, Resistant, Susceptible, na.rm = TRUE), 
+            prop_r = Resistant / total)  %>% 
+  ungroup() %>%
+  group_by(organism_clean) %>% 
+  arrange(desc(organism_clean), desc(total))
+
+atlas_clean_focus_bd_r %>% filter(total > 100000)
+
+
 # If choosing top 3
 atlas_clean_focus_sad <- atlas_clean_focus_b %>% 
   filter(organism_clean=="Staphylococcus aureus",
          antibiotic %in% c("levofloxacin",
-                           "vancomycin",
-                           "linezolid"))
+                          "vancomycin", # Exclude as resistance < 5%
+                           "erythromycin"))
 # If choosing 2
 atlas_clean_focus_sad_pre <- atlas_clean_focus_b %>% 
   filter(organism_clean=="Staphylococcus aureus",
          antibiotic %in% c("levofloxacin",
-                           "vancomycin"))
+                           "erythromycin"))
 
 # Top antibiotics for E coli
 head(atlas_clean_focus_bd %>% filter(organism_clean=="Escherichia coli"))
@@ -140,7 +156,7 @@ atlas_clean_focus_ecd <- atlas_clean_focus_b %>%
 atlas_clean_focus_ecd_pre <- atlas_clean_focus_b %>% 
   filter(organism_clean=="Escherichia coli",
          antibiotic %in% c("levofloxacin",
-                           "ampicillin"))
+                           "ampicillin")) # both have > 30% resistance
 
 # Top antibiotics for K pneumoniae
 head(atlas_clean_focus_bd %>% filter(organism_clean=="Klebsiella pneumoniae"))
