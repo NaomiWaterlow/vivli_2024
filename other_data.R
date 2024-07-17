@@ -146,6 +146,6 @@ Other_data <- dt_all_country_codes  %>%
   left_join(dt_education, by = "country_code")
 
 # Save the merged data
-write.csv(Other_data, "other_data_v1.csv", row.names = FALSE)
+write.csv(Other_data, "other_data_v2.csv", row.names = FALSE)
 # ------------------------------------------------------------------------------
 
