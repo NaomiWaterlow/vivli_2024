@@ -51,27 +51,27 @@ dt_BirthRate <- dt_BirthRate[, c("country_code", "birth_rate")]
 # ------------------------------------------------------------------------------
 
 
-# GDP---------------------------------------------------------------------------
+# GDP-per-capita----------------------------------------------------------------
 # Import data
-dt_GDP <- read.csv("Other_data/GDP.csv", skip = 4, header = FALSE)
+dt_GDP_per_capita <- read.csv("Other_data/GDP_per_capita.csv", skip = 4, header = FALSE)
 
 # Set the column names to be the values of the first row
-colnames(dt_GDP) <- dt_GDP[1, ]
+colnames(dt_GDP_per_capita) <- dt_GDP_per_capita[1, ]
 
 # Remove the first row, which is now the header
-dt_GDP <- dt_GDP[-1, ]
+dt_GDP_per_capita <- dt_GDP_per_capita[-1, ]
 
-# Create a new column 'GDP' which is the average of the specified years
+# Create a new column 'GDP_per_capita' which is the average of the specified years
 # average of 2015-2019 (before covid) 
-dt_GDP <- dt_GDP %>%
-  mutate(GDP = rowMeans(select(., `2015`, `2016`, `2017`, `2018`, `2019`), na.rm = TRUE))
+dt_GDP_per_capita <- dt_GDP_per_capita %>%
+  mutate(GDP_per_capita = rowMeans(select(., `2015`, `2016`, `2017`, `2018`, `2019`), na.rm = TRUE))
 
 # Rename column
-dt_GDP <- dt_GDP %>%
+dt_GDP_per_capita <- dt_GDP_per_capita %>%
   rename(country_code = `Country Code`)
 
 # Select only the relevant columns
-dt_GDP <- dt_GDP[, c("country_code", "GDP")]
+dt_GDP_per_capita <- dt_GDP_per_capita[, c("country_code", "GDP_per_capita")]
 # ------------------------------------------------------------------------------
 
 
@@ -141,7 +141,7 @@ dt_all_country_codes <- data.frame(country_code = all_country_codes)
 # Merge datasets with the all_country_codes_df
 Other_data <- dt_all_country_codes  %>%
   left_join(dt_BirthRate, by = "country_code") %>%
-  left_join(dt_GDP, by = "country_code") %>%
+  left_join(dt_GDP_per_capita, by = "country_code") %>%
   left_join(dt_CaesareanSection, by = "country_code") %>%
   left_join(dt_education, by = "country_code")
 
