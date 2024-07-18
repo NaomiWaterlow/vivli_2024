@@ -28,7 +28,7 @@ for(bug_specific in unique_bugs){
    data_subset_top <- input_data[species ==bug_specific, ]
    
    # loop over drugs
-  for(drug_specific in unique(data_subset$antibiotic)){
+  for(drug_specific in unique(data_subset_top$antibiotic)){
      
      
 
