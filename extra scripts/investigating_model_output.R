@@ -1,22 +1,17 @@
 # testing model output
 
-Model_1 <-  glmer(mic_label ~ 1  + (1|country),
-                  data = data_subset, 
-                  family = "binomial")
-
-
 
 
 # Use model generated from other script
-Model_1
+Model_2
 
 # look at summary
-summary(Model_1)
+summary(Model_2)
 
 
 # Compute and display the VPC=ICC statistic
-rpm1 <- as.data.frame(VarCorr(Model_1))
-rpm1
+rpm1 <- as.data.frame(VarCorr(Model_2))
+
 # extracts the estimated country variance
 rpm1
 rpm1$vcov[rpm1$grp == "country"] / (rpm1$vcov[rpm1$grp == "country"] + pi^2/3)
@@ -25,7 +20,7 @@ rpm1$vcov[rpm1$grp == "country"] / (rpm1$vcov[rpm1$grp == "country"] + pi^2/3)
 # ---> 21% of the variation is explained by the country level random effects...
 
 # eztract the random effects
-u0 <- as.data.frame(ranef(Model_1))
+u0 <- as.data.frame(ranef(Model_2))
 head(u0)
 str(u0)
 # u0 is a new data frame with one row per country
@@ -81,14 +76,20 @@ Model_2 <-  glmer(mic_label ~ 1 +age + gender + (1|country),
 
 # Extract predicted probabilities
 data_subset$m2probpred <- inv.logit(predict(Model_2))
+data_subset$m2logoddspred <- predict(Model_2)
 # The predict() function stores the fitted values on the log-odds scale. The
 # inv.logit() function tranlates these to the probability scale.
 
-ggplot(data_subset[gender == "f"], aes(x = age, y = m2probpred, colour = country)) + 
+data_subset
+
+
+
+ggplot(data_subset[gender == "f"], aes(x = age, y = m2logoddspred, colour = country)) + 
   geom_point() + theme(legend.position = "None")
 
-ggplot(data_subset[gender == "f"], aes(x = country, y = m2probpred, colour = age)) + 
-  geom_point() + theme(legend.position = "None")
+ggplot(data_subset, aes(x = gender, y = exp(m2logoddspred), colour = age)) + 
+  geom_point() + theme(legend.position = "None") + 
+  facet_grid(.~country)
 
 
 
