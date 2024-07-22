@@ -9,6 +9,10 @@ library(scales)
 library(cowplot)
 library(ggthemes)
 library(giscoR)
+theme_set(theme_bw())
+
+### Remove those with < 1000
+### Remove those with unknown age 
 
 # World map data 
 world_coordinates <- map_data("world") 
@@ -21,10 +25,11 @@ worldMap <- map_data("world")
 # of border in map 
 
 ## Our data
-data <- read_csv("data/atlas_data_cleaned.csv")
+data <- read_csv("data/atlas_data_cleaned.csv") 
 
 ## What proportion in women? and then calculate a ratio
 data_gender_props <- data %>% group_by(country, age, species, gender, antibiotic) %>%
+  filter(!age == "Unknown") %>% 
   summarise(n_isolates = n(),
             prop_r = sum(mic_label)/n_isolates) %>% 
   select(-n_isolates) %>% 
@@ -93,4 +98,56 @@ for(i in drugs){
   }    
 }
 
+## Add in income group 
+key <- read.csv("data/country_maps.csv") 
+# Check all in there: data_gender_props %>% filter(!region %in% unique(key$country))
 
+data_gender_props_in <- left_join(data_gender_props, key)
+
+## How does it vary by country? 
+# ggplot(data_gender_props %>% filter(species == "Staphylococcus aureus", !is.na(ratio)), aes(x=interaction(age, region), y = ratio)) + 
+#   geom_point(aes(colour = age)) + 
+#   facet_grid(age ~ antibiotic)
+
+ggplot(data_gender_props %>% filter(!is.na(ratio)), 
+       aes(x=age, y = ratio)) + 
+  geom_boxplot(aes(colour = age)) + 
+  facet_grid(species ~ antibiotic) + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+
+### BY regions 
+ggplot(data_gender_props_in %>% filter(!is.na(ratio)), 
+       aes(x=age, y = ratio)) + 
+  geom_boxplot(aes(colour = age)) + 
+  facet_grid(species + antibiotic ~ income_group) + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+ggsave("plots/ratio_by_species_antibiotic_income_group.pdf")
+
+ggplot(data_gender_props_in %>% filter(!is.na(ratio)), 
+       aes(x=age, y = ratio)) + 
+  geom_boxplot(aes(colour = age)) + 
+  facet_grid(species + antibiotic ~ region_nat) + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+ggsave("plots/ratio_by_species_antibiotic_region.pdf")
+
+
+ggplot(data_gender_props_in %>% filter(!is.na(ratio)), 
+       aes(x=age, y = ratio, group = region_nat)) + 
+  geom_point(aes(col = age)) + 
+  geom_line() + 
+  facet_grid(species + antibiotic ~ region_nat) + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+ggsave("plots/ratio_by_species_antibiotic_region.pdf")
+
+
+
+# ggplot(data_gender_props %>% filter(!is.na(ratio)), aes(x=interaction(age, region), y = ratio)) + 
+#      geom_bar(stat = "identity", aes(fill = age)) + 
+#    facet_wrap(antibiotic~species)
+# 
+# # Group x axis by WHO region? 
+# 
+# ggplot(data_gender_props %>% filter(!is.na(ratio)), aes(x=interaction(region), y = ratio)) + 
+#   geom_bar(stat = "identity", aes(fill = age)) + 
+#   facet_wrap(age ~ antibiotic + species)
+# 
