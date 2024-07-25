@@ -84,11 +84,17 @@ dt_education <- dt_education %>%
   rename(country_code = `Country.Code`)
 
 # Define the indicators to filter
+# indicators <- c(
+#   "Primary completion rate, male, based on completers",
+#   "Primary completion rate, female, based on completers"
+# )
+
 indicators <- c(
-  "Primary completion rate, male, based on completers",
-  "Primary completion rate, female, based on completers"
+  "Primary completion rate, male (% of relevant age group)",
+  "Primary completion rate, female (% of relevant age group)"
 )
 
+  
 # Filter the dt_education data frame
 dt_education <- dt_education %>%
   filter(Indicator.Name %in% indicators)
@@ -100,13 +106,13 @@ dt_education <- dt_education %>%
 # Create a new column 'primary_completion' which is the average of the specified years
 # average of 2015-2018 (before covid) - 2019 not available
 dt_education <- dt_education  %>%
-  mutate(primary_completion = rowMeans(select(., `2015`, `2016`, `2017`, `2018`), na.rm = TRUE))
+  mutate(primary_completion = rowMeans(select(., `2015`, `2016`, `2017`, `2018`, `2019`), na.rm = TRUE))
 
 # Create the gender column based on Indicator.Name
 dt_education <- dt_education %>%
   mutate(Indicator.Name = case_when(
-    Indicator.Name == "Primary completion rate, male, based on completers" ~ "primary_completion_M",
-    Indicator.Name == "Primary completion rate, female, based on completers" ~ "primary_completion_F",
+    Indicator.Name == "Primary completion rate, male (% of relevant age group)" ~ "primary_completion_M",
+    Indicator.Name == "Primary completion rate, female (% of relevant age group)" ~ "primary_completion_F",
     TRUE ~ NA_character_  # Default case for other Indicator.Name values
   )) 
 
@@ -146,6 +152,6 @@ Other_data <- dt_all_country_codes  %>%
   left_join(dt_education, by = "country_code")
 
 # Save the merged data
-write.csv(Other_data, "other_data_v2.csv", row.names = FALSE)
+write.csv(Other_data, "other_data_v3.csv", row.names = FALSE)
 # ------------------------------------------------------------------------------
 
