@@ -19,14 +19,16 @@ input_data$age <- factor(input_data$age, levels = c("0 to 2 Years" ,
                                                     "65 to 84 Years",
                                                     "85 and Over"))
 
+input_data$c_section <- as.numeric(input_data$c_section)
+
 # loop over bugs 
 for(bug_specific in unique_bugs){
    
    # subset to bug data
-   data_subset <- input_data[species ==bug_specific, ]
+   data_subset_top <- input_data[species ==bug_specific, ]
    
    # loop over drugs
-  for(drug_specific in unique(data_subset$antibiotic)){
+  for(drug_specific in unique(data_subset_top$antibiotic)){
      
      
 
@@ -35,12 +37,12 @@ for(bug_specific in unique_bugs){
     print(paste0("model running is: ", bug_specific, " , ", drug_specific))
      
      #subset to drug data
-     data_subset <- data_subset[antibiotic ==drug_specific, ]
+     data_subset <- data_subset_top[antibiotic ==drug_specific, ]
      
      #only include those countries with 1000 or more samples
      # and remove uknown age
      data_subset[, country_total := .N, by = "country"]
-     data_subset <- data_subset[country_total>5000 & age != "Unknown",]
+     data_subset <- data_subset[country_total>1000 & age != "Unknown",]
      
 
      # Model 1
@@ -51,21 +53,29 @@ for(bug_specific in unique_bugs){
      print("Model 0 complete")
          
    # Model 1
-   Model_1 <-  glmer(mic_label ~ 1 +age + gender + (1|country),
+   Model_1 <-  glmer(mic_label ~ 1 +age + gender  + (1|country),
           data = data_subset, 
           family = "binomial")
    
    print("Model 1 complete")
    # Model 2
-   Model_2 <- glmer(mic_label ~ age + gender + gender*country+ (1|country) ,
+   Model_2 <- glmer(mic_label ~ age + gender + (1 + gender|country) ,
           data = data_subset,
           family = "binomial")
    
+   # In this sample, adjusting for the impact of age, the odds of gender per country is.
+   # We can calculate a country specific odds ratio of gender, but not an overall one. 
+   # Want an uncertainty around it. 
+   
    print("Model 2 complete")
+   
+   
    # Model 3 # need to add country level factors! 
-   Model_3 <- glmer(mic_label ~ age + gender + gender*country + (1 + birth_rate + c_section + GDP + primary_completion_female_over_male|country) ,
+   Model_3 <- glmer(mic_label ~ age + gender  + c_section + birth_rate  + (1  + gender|country) ,
                     data = data_subset,
                     family = "binomial")
+   # e.g. adjusting for birth rate as well, does  country still have an impact?
+   
    print("Model 3 complete")
    
    name_use <- paste0(bug_specific, " - ", drug_specific)
