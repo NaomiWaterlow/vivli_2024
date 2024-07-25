@@ -121,23 +121,23 @@ ggplot(data_gender_props_in %>% filter(!is.na(ratio)),
   geom_boxplot(aes(colour = age)) + 
   facet_grid(species + antibiotic ~ income_group) + 
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
-ggsave("plots/ratio_by_species_antibiotic_income_group.pdf")
+ggsave("plots/ratio_by_species_antibiotic_income_group_boxplot.pdf")
 
 ggplot(data_gender_props_in %>% filter(!is.na(ratio)), 
        aes(x=age, y = ratio)) + 
   geom_boxplot(aes(colour = age)) + 
   facet_grid(species + antibiotic ~ region_nat) + 
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
-ggsave("plots/ratio_by_species_antibiotic_region.pdf")
+ggsave("plots/ratio_by_species_antibiotic_region_boxplot.pdf")
 
 
 ggplot(data_gender_props_in %>% filter(!is.na(ratio)), 
        aes(x=age, y = ratio, group = region_nat)) + 
   geom_point(aes(col = age)) + 
-  geom_line() + 
+  geom_smooth(aes(col = species)) + 
   facet_grid(species + antibiotic ~ region_nat) + 
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
-ggsave("plots/ratio_by_species_antibiotic_region.pdf")
+ggsave("plots/ratio_by_species_antibiotic_region_dots.pdf")
 
 
 
