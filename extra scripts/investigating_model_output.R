@@ -34,10 +34,12 @@ Model_0 <- models_together[[1]]
 Model_1 <- models_together[[2]]
 Model_2 <- models_together[[3]]
 Model_3 <- models_together[[4]]
+Model_4 <- models_together[[5]]
+Model_5 <- models_together[[6]]
 
 #specify data subset
-drug_specific <- "levofloxacin"
-bug_specific <- "Staphylococcus aureus"
+drug_specific <- "levofloxacin" # "ampicillin"
+bug_specific <- "Staphylococcus aureus" # "Escherichia coli"
 data_subset <- input_data[species == bug_specific & 
                             antibiotic == drug_specific]
 
@@ -233,5 +235,49 @@ ggplot(comparison_data[type == "probpred"], aes(x = gender, y = value,
 #this shows that in some countries there is a small impact of including these variables. 
 # but little. 
 
+#TODO 
 # ideally want a metric of how much of the variation it explains... 
 
+###### Model 4: Age*gender interaction ##### 
+# if this works probably want to do this instead of models 2 and 3
+
+#lets take a look at teh randome ffects
+lattice::dotplot(ranef(Model_4, whichel = "country", condVar = T), 
+                 scales = list(y=list(alternating = 0)))
+
+# can't consider the fixed effects alone for gender, as it's also a covariate in the random effects
+# but age should still be meaninful
+
+se <- sqrt(diag(vcov(Model_4)))
+# table of estimates with 95% CI
+tab <- cbind(Est = fixef(Model_4), LL = fixef(Model_4) - 1.96 * se,
+             UL = fixef(Model_4) + 1.96 *se)
+exp(tab)
+# age:gender interaction CI crosses 0, and very small effect..
+anova(Model_3, Model_4)
+# Model 4 is NOT better than Model 3.
+
+#But lets check the plots anyway, to confirm it's doing waht I think
+# Extract predicted log odds
+data_subset$m4_logodds <- predict(Model_4)
+# And the predicted probability
+data_subset$m4_probpred <- inv.logit(predict(Model_4))
+
+# each lines represents a country
+# this version is slightly odd because it's a 'slope' between f and m
+# but it shows how the slope differs by country. 
+ggplot(data_subset, aes(x = gender, y = m4_probpred,  group = interaction(country,age), colour = country)) + 
+  geom_line() +# theme(legend.position = "None") + 
+  facet_grid(.~age, scales ="free_y")
+# Yep, did what we want. 
+# Interstingly seems to have had basically no visual impact in any country other than India
+
+
+# also, maybe this isn't actually what I want to do. Want it to have one effect in a 
+# reproductive age compared to not reproductive age...
+
+
+##### MODEL_5 #####
+
+#### HMMMM Get warning
+# fixed-effect model matrix is rank deficient so dropping 1 column/coefficient

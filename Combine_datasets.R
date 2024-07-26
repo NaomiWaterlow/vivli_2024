@@ -3,7 +3,7 @@ library(data.table)
 library(countrycode)
 
 # convert the country variable in the country data to match atlas
-country_data <- fread("Other_data/other_data_v1.csv")
+country_data <- fread("Other_data/other_data_v3.csv")
 country_data[, country := countrycode(country_code, origin = "iso3c", destination = "country.name")]
 
 # load atlas

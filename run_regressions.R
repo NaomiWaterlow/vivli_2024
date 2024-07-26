@@ -78,6 +78,26 @@ for(bug_specific in unique_bugs){
    
    print("Model 3 complete")
    
+   # Model 4 - want the effect of gender to be able to be different with age - interaction?
+   Model_4 <- glmer(mic_label ~ age + gender + age*gender + c_section + birth_rate  + (1  + gender|country) ,
+                    data = data_subset,
+                    family = "binomial")
+   
+   # Model 5 - only age:gender interaction for reproductive age
+   # 
+   # this gives warning that it's rank deficient. I thin because reproductive
+   # and age are subsets of one another?
+   # 
+   # data_subset[age %in% c("65 to 84 Years", "85 and Over", 
+   #                        "13 to 18 Years", "3 to 12 Years", "0 to 2 Years"), 
+   #             reproductive := 0]
+   # data_subset[age %in% c("19 to 64 Years"), reproductive := 1]
+   # 
+   # Model_5 <- glmer(mic_label ~ age + gender + reproductive:gender + c_section + birth_rate  + (1  + gender|country) ,
+   #                  data = data_subset,
+   #                  family = "binomial")
+   # 
+   
    name_use <- paste0(bug_specific, " - ", drug_specific)
    
    model_list[[name_use]] <- list(Model_0, Model_1, Model_2, Model_3) 
