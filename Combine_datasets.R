@@ -36,9 +36,19 @@ unique(atlas_cleaned[is.na(birth_rate),]$country)
 # just taiwan! And that's because the data is missing, not incorrect coding
 
 # Then add the other variables
-atlas_cleaned[country_data, on = c("country"), GDP := i.GDP]
+#atlas_cleaned[country_data, on = c("country"), GDP := i.GDP]
 atlas_cleaned[country_data, on = c("country"), c_section := i.c_section]
-atlas_cleaned[country_data, on = c("country"), primary_completion_female_over_male := i.primary_completion_female_over_male]
+#atlas_cleaned[country_data, on = c("country"), primary_completion_female_over_male := i.primary_completion_female_over_male]
+
+
+# add mean to the ones its NA for
+
+mean_csection <- mean(as.numeric(unique(atlas_cleaned[,c("country", "c_section")])$c_section), na.rm = T)
+mean_birth <- mean(as.numeric(unique(atlas_cleaned[,c("country", "birth_rate")])$birth_rate), na.rm = T)
+
+atlas_cleaned[is.na(c_section), c_section := mean_csection]
+atlas_cleaned[is.na(birth_rate), birth_rate := mean_birth]
+
 
 # save the combined data
 fwrite(atlas_cleaned, "data/combined_atlas.csv")

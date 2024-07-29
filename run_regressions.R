@@ -79,9 +79,9 @@ for(bug_specific in unique_bugs){
    print("Model 3 complete")
    
    # Model 4 - want the effect of gender to be able to be different with age - interaction?
-   Model_4 <- glmer(mic_label ~ age + gender + age*gender + c_section + birth_rate  + (1  + gender|country) ,
-                    data = data_subset,
-                    family = "binomial")
+   # Model_4 <- glmer(mic_label ~ age + gender + age*gender + c_section + birth_rate  + (1  + gender|country) ,
+   #                  data = data_subset,
+   #                  family = "binomial")
    
    # Model 5 - only age:gender interaction for reproductive age
    # 
