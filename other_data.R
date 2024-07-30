@@ -24,6 +24,17 @@ dt_CaesareanSection$country_code <- countrycode(dt_CaesareanSection$country_name
 
 # Select only the relevant columns
 dt_CaesareanSection <- dt_CaesareanSection[, c("country_code", "c_section")]
+
+# Keep only one value for GBR 
+# There are currently four different values for GBR, 
+# but only the value that matches the NHS data is retained
+
+# Remove rows where country_code is "GBR"
+dt_CaesareanSection <- dt_CaesareanSection[dt_CaesareanSection$country_code != "GBR", ]
+
+# Add new row with country_code "GBR" and c_section 27.8%
+new_row <- data.frame(country_code = "GBR", c_section = 27.8)
+dt_CaesareanSection <- rbind(dt_CaesareanSection, new_row)
 # ------------------------------------------------------------------------------
 
 
