@@ -71,6 +71,9 @@ print(paste0("For ", bug_specific, ", ", drug_specific," " ,var0, "% of total va
 #(i.e. because this is a logisitic model)
 # slide number 289, page 73
 # @Simon check this makes sense
+# @Naomi - this seems correct to me following from the slides, but there is one thing that I'm not sure of:
+# the variance for a logistic function is s^2*pi^2/3 where s is the scale parameter, in the example s=1, 
+# but does this hold for our model?
 
 # extract the random effects
 u0 <- as.data.frame(ranef(Model_0))
@@ -121,7 +124,7 @@ MODEL_0_INTERCEPT <- ggplot(u0, aes(x = grp, y = condval, ymin = lower, ymax = u
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + 
   labs(x = "Country", y = "Intercept variation by country (z score)", 
        title = paste0("Model 0, ", bug_specific, ", ", drug_specific))
-# @Simon, appropriate y label?
+# @Simon, appropriate y label? @Naomi - yes 
 
 ##### Ajusting for age and gender (Model 1) ##### 
 
@@ -167,6 +170,7 @@ exp(tab)
 deviance(Model_1) - deviance(Model_2)
 anova(Model_1, Model_2) 
 # @Simon, do you agree we can do anovas with random effcts models
+# @Naomi - yes
 
 # Want to have a look at how gender 'slope' varies by country
 
@@ -353,12 +357,29 @@ MODEL_COMPARISON <- ggplot(test_data_c, aes(x = country, y = oddsratio, colour =
 #@Simon - so, I would have thought that if the birth rate and c-section rates were important, 
 #the odds ratios between ages would be closer to the odds ratio in Model 1 in Model 3 than Model 2. (i.e. closer to ~0.9)
 # I.e. some of the country level variation would be explained by birth/rate and csection. 
-# which seems to mostly be the case, especially in the mnore extreme ones. 
+# which seems to mostly be the case, especially in the mnore extreme ones.
+
+#@Naomi - so I agree that by including birth rate and c-section in the model then we would expect to see
+# a reduction in the between country variance if these covariates have some explanatory power. But, would
+# this not be the variation in the prevalence of resistance, not the variation in the effect of gender by
+# country? i.e. would the slope of gender stay the same?
+# Actually, thinking about it a bit more, if the effect of (e.g.) the c-section covariate is to shift the
+# prevalence by the same amount in then I think the OR will change in even if the slope stays the same.
+# But, we can just check if the slopes change to see if this is correct or not.
 
 # Can't really work out uncertainty in random effects
 # most calculations of error etc. I have seen is in the fixed effects, assuming the random effects are "True"
 # but it's the random effects we want to see the variation in. 
 # @Simon do you agree? 
+
+# @Naomi - I've still not wrapped my head around this. I'm wondering if we can use the emmeans package
+# to calculate the ORs with CIs (https://cran.r-project.org/web/packages/emmeans/vignettes/transformations.html#bias-adj)
+# but I'm really not sure...
+
+# library("emmeans")
+# emm.src <- emmeans(Model_3, "gender")
+# summary(emm.src)
+# summary(emm.src, type="response")
 
 # Alternative is running it all in a Bayesian fashion rather than in a frequentist one.
 # See script regressions_brms.R to run them 
