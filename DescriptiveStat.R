@@ -104,13 +104,14 @@ table_antibiotic <- combined_atlas %>%
   )) %>%
   group_by(gender, antibiotic) %>%
   summarise(n = n(), .groups = "drop") %>%
+  group_by(gender) %>%
   mutate(percent = round(100 * n / sum(n), 1)) %>%
   ungroup() %>%
   pivot_wider(names_from = gender, values_from = c(n, percent), names_sep = "_") %>%
   mutate(Total_n = n_Female + n_Male,
-         Total_percent = round(100 * Total_n / sum(Total_n), 1),
          Female = paste0(n_Female, " (", percent_Female, "%)"),
          Male = paste0(n_Male, " (", percent_Male, "%)"),
+         Total_percent = round(100 * Total_n / sum(Total_n), 1),
          Total = paste0(Total_n, " (", Total_percent, "%)"),
          variable = recode(antibiotic,
                            "ampicillin" = "Ampicillin",
