@@ -124,7 +124,7 @@ MODEL_0_INTERCEPT <- ggplot(u0, aes(x = grp, y = condval, ymin = lower, ymax = u
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + 
   labs(x = "Country", y = "Intercept variation by country (z score)", 
        title = paste0("Model 0, ", bug_specific, ", ", drug_specific))
-# @Simon, appropriate y label? @Naomi - yes 
+
 
 ##### Ajusting for age and gender (Model 1) ##### 
 
@@ -169,8 +169,7 @@ exp(tab)
 # check if this model is better (same logic as above)
 deviance(Model_1) - deviance(Model_2)
 anova(Model_1, Model_2) 
-# @Simon, do you agree we can do anovas with random effcts models
-# @Naomi - yes
+
 
 # Want to have a look at how gender 'slope' varies by country
 
@@ -321,51 +320,63 @@ test_data$c_section <- as.numeric(test_data$c_section)
 
 test_data0 <- copy(test_data)
 test_data0[, Model := 0]
-test_data0$logodds <- predict(Model_0,test_data0)
+test_data0$predprob <- inv.logit(predict(Model_0,test_data0))
 
 test_data1 <- copy(test_data)
 test_data1[, Model := 1]
-test_data1$logodds <- predict(Model_1,test_data1)
+test_data1$predprob <- inv.logit(predict(Model_1,test_data1))
 
 test_data2 <- copy(test_data)
 test_data2[, Model := 2]
-test_data2$logodds <- predict(Model_2,test_data2)
+test_data2$predprob <- inv.logit(predict(Model_2,test_data2))
 
 test_data3 <- copy(test_data)
 test_data3[, Model := 3]
-test_data3$logodds <- predict(Model_3,test_data3)
+test_data3$predprob <- inv.logit(predict(Model_3,test_data3))
 
 
 test_data <- rbind(test_data0, test_data1, test_data2, test_data3)
 
 #cast to compare gender
-test_data_c <- dcast.data.table(test_data, age + country + Model ~ gender, value.var = "logodds")
-test_data_c[, oddsratio := exp(f)/exp(m)]
+test_data_c <- dcast.data.table(test_data, age + country + Model ~ gender, value.var = "predprob")
+test_data_c[, difference := m-f]
 
 
-factor_levels <- test_data_c[Model == 2]
-factor_levels <- as.character(factor_levels[order(oddsratio)]$country)
+factor_levels <- test_data_c[Model == 1]
+factor_levels <- as.character(factor_levels[order(difference)]$country)
 test_data_c[, country := factor(country, levels = factor_levels)]
 test_data_c[, Model := as.factor(Model)]
 
-MODEL_COMPARISON <- ggplot(test_data_c, aes(x = country, y = oddsratio, colour = Model)) + 
+MODEL_COMPARISON <- ggplot(test_data_c, aes(x = country, y = difference, colour = Model)) + 
   geom_point() + theme_bw() + 
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + 
-  geom_hline(yintercept = 1) + 
-  labs(x = "County", y = "Odds ratio f/m", 
+  geom_hline(yintercept = 0) + 
+  labs(x = "County", y = "Difference in probability (m - f)", 
        title = paste0(bug_specific, ", ", drug_specific))
-#@Simon - so, I would have thought that if the birth rate and c-section rates were important, 
-#the odds ratios between ages would be closer to the odds ratio in Model 1 in Model 3 than Model 2. (i.e. closer to ~0.9)
-# I.e. some of the country level variation would be explained by birth/rate and csection. 
-# which seems to mostly be the case, especially in the mnore extreme ones.
 
-#@Naomi - so I agree that by including birth rate and c-section in the model then we would expect to see
-# a reduction in the between country variance if these covariates have some explanatory power. But, would
-# this not be the variation in the prevalence of resistance, not the variation in the effect of gender by
-# country? i.e. would the slope of gender stay the same?
-# Actually, thinking about it a bit more, if the effect of (e.g.) the c-section covariate is to shift the
-# prevalence by the same amount in then I think the OR will change in even if the slope stays the same.
-# But, we can just check if the slopes change to see if this is correct or not.
+MODEL_COMPARISON
+
+# Model 1 has different values by country, despite not allowing gender differences by country, 
+# because of the conversion from log scale to probability scale. I.e. pushing the intercept higher
+# on log odds scale will result in the impact of gender intercept to be smaller, because it\s 
+# in the more sigmoid part. (CHecked correct - higher random intercept translates to bigger magnitude difference)
+
+
+
+
+test_data[,Model := factor(Model)]
+
+MODEL_COMPARISON_SPLIT <- ggplot(test_data, aes(x = country, y = predprob, colour = Model)) + 
+  geom_point() + theme_bw() + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + 
+  geom_hline(yintercept = 0) + 
+  facet_grid(.~gender) +
+  labs(x = "County", y = "Predicted Probability", 
+       title = paste0(bug_specific, ", ", drug_specific))
+
+
+MODEL_COMPARISON_SPLIT
+
 
 # Can't really work out uncertainty in random effects
 # most calculations of error etc. I have seen is in the fixed effects, assuming the random effects are "True"

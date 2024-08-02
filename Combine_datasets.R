@@ -43,8 +43,8 @@ atlas_cleaned[country_data, on = c("country"), c_section := i.c_section]
 
 # add mean to the ones its NA for
 
-mean_csection <- mean(as.numeric(unique(atlas_cleaned[,c("country", "c_section")])$c_section), na.rm = T)
-mean_birth <- mean(as.numeric(unique(atlas_cleaned[,c("country", "birth_rate")])$birth_rate), na.rm = T)
+suppressWarnings(mean_csection <- mean(as.numeric(unique(atlas_cleaned[,c("country", "c_section")])$c_section), na.rm = T))
+suppressWarnings(mean_birth <- mean(as.numeric(unique(atlas_cleaned[,c("country", "birth_rate")])$birth_rate), na.rm = T))
 
 atlas_cleaned[is.na(c_section), c_section := mean_csection]
 atlas_cleaned[is.na(birth_rate), birth_rate := mean_birth]
