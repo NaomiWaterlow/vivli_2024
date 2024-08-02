@@ -1,3 +1,7 @@
+####### August 2024 ######################################################################
+## Authors: Naomi Waterlow , Alastair Clements, Chaelin Kim, Simon Procter, Gwen Knight ##
+##########################################################################################
+
 ### Generate a map of resistance by gender 
 
 ## Needed libraries

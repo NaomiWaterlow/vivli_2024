@@ -1,17 +1,18 @@
-#what about brms version so we can quantify uncertainty?
-library(brms)
-library(data.table)
+####### August 2024 ######################################################################
+## Authors: Naomi Waterlow , Alastair Clements, Chaelin Kim, Simon Procter, Gwen Knight ##
+##########################################################################################
 
-
+#load data
 input_data <- data.table(read.csv("data/combined_atlas.csv"))
 
-
+# specify subgroup
 unique_bugs <- unique(input_data$species)
 unique_drugs <- unique(input_data$antibiotic)
 countries <- unique(input_data$country)
 
+#empty vessel
 model_list <- list()
-
+#format
 input_data$age <- factor(input_data$age, levels = c("0 to 2 Years" , 
                                                     "3 to 12 Years", 
                                                     "13 to 18 Years",
@@ -23,10 +24,6 @@ input_data$c_section <- as.numeric(input_data$c_section)
 input_data$gender <- as.factor(input_data$gender)
 bug_specific <- unique_bugs[2]
 drug_specific <- unique_drugs[1]
-
-
-
-#  Need to put in the number of trials, so will calculate
 
 # # loop over bugs 
 # for(bug_specific in unique_bugs){
@@ -52,10 +49,8 @@ drug_specific <- unique_drugs[1]
     # Model 1
     Model_0 <-  brm(mic_label ~ 1 + (1|country),
                       data = data_subset, 
-                    #family = binomial(link = "logit"),
                    family = bernoulli(link="logit"),
                     file = paste0("fits/",bug_specific,"_",drug_specific, "_Model0"), 
-                  #  sample_prior = "only",
                     file_refit = getOption("brms.file_refit", "always"),
                     iter = 5000, save_pars = save_pars(all = TRUE))
     
@@ -76,6 +71,7 @@ drug_specific <- unique_drugs[1]
                   file = paste0("fits/",bug_specific,"_",drug_specific, "_Model1"))
     
     print("Model 1 complete")
+    
     # Model 2
     Model_2 <- brm(mic_label ~ age + gender + (1 + gender|country) ,
                      data = data_subset,
@@ -86,9 +82,7 @@ drug_specific <- unique_drugs[1]
     
     Model_2 <- add_criterion(Model2, criterion = "loo_subsample", 
                              file = paste0("fits/",bug_specific,"_",drug_specific, "_Model2"))
-    # In this sample, adjusting for the impact of age, the odds of gender per country is.
-    # We can calculate a country specific odds ratio of gender, but not an overall one. 
-    # Want an uncertainty around it. 
+ 
     
     print("Model 2 complete")
     
@@ -103,7 +97,7 @@ drug_specific <- unique_drugs[1]
     
     Model_3 <- add_criterion(Model_3, criterion = "loo_subsample", 
                              file = paste0("fits/",bug_specific,"_",drug_specific, "_Model3"))
-# e.g. adjusting for birth rate as well, does  country still have an impact?
+
     
     print("Model 3 complete")
     

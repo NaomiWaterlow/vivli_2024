@@ -1,3 +1,8 @@
+####### August 2024 ######################################################################
+## Authors: Naomi Waterlow , Alastair Clements, Chaelin Kim, Simon Procter, Gwen Knight ##
+##########################################################################################
+
+
 # comparison across bugs of fixed effects
 
 # 1. Age differences are much bigger than any gender differences

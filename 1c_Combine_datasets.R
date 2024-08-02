@@ -1,3 +1,8 @@
+####### August 2024 ######################################################################
+## Authors: Naomi Waterlow , Alastair Clements, Chaelin Kim, Simon Procter, Gwen Knight ##
+##########################################################################################
+
+
 #Combine the datasets
 library(data.table)
 library(countrycode)

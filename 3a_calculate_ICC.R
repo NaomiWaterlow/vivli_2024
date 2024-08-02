@@ -1,17 +1,21 @@
+####### August 2024 ######################################################################
+## Authors: Naomi Waterlow , Alastair Clements, Chaelin Kim, Simon Procter, Gwen Knight ##
+##########################################################################################
+
+
 # calculate ICC# run regressions
 library(lme4)
 library(data.table)
 
-
+# load data
 input_data <- data.table(read.csv("data/combined_atlas.csv"))
 
-
+#specify subset
 unique_bugs <- unique(input_data$species)
 unique_drugs <- unique(input_data$antibiotic)
 countries <- unique(input_data$country)
 
-model_list <- list()
-
+# formatting
 input_data$age <- factor(input_data$age, levels = c("0 to 2 Years" , 
                                                     "3 to 12 Years", 
                                                     "13 to 18 Years",
@@ -30,9 +34,6 @@ for(bug_specific in unique_bugs){
   # loop over drugs
   for(drug_specific in unique(data_subset_top$antibiotic)){
     
-    
-    
-    
     # print for tracking
     print(paste0("model running is: ", bug_specific, " , ", drug_specific))
     
@@ -45,7 +46,7 @@ for(bug_specific in unique_bugs){
     data_subset <- data_subset[country_total>1000 & age != "Unknown",]
     
     
-    # Model 1
+    # Model 0
     Model_0 <-  glmer(mic_label ~ 1 + (1|country),
                       data = data_subset, 
                       family = "binomial")

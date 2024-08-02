@@ -1,10 +1,17 @@
+############ Master script ###############################################################
+####### August 2024 ######################################################################
+## Authors: Naomi Waterlow , Alastair Clements, Chaelin Kim, Simon Procter, Gwen Knight ##
+##########################################################################################
+
+
 # Main workflow
 
 #libraries needed
 library(data.table)
 library(ggplot2)
-library(lme4)
+library(brms)
 library(boot)
+library(sjstats)
 library(gridExtra)
 
 #### LOAD AND CLEAN ####
@@ -33,6 +40,9 @@ source("3a_calculate_ICC.R")
 #source("3b_regressions_brms.R")
 
 # model output
+# this is run for each model (1-4) individually
+model_to_run <- 1
+#this script also requires 1c_Combine_datasets.R" to have been run previously
 source("3c_investigating_brms_output.R")
 # compare across bug-drugs
 source("3d_comparison_bug_drug.R")

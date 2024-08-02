@@ -1,3 +1,9 @@
+############ Master script ###############################################################
+####### August 2024 ######################################################################
+## Authors: Naomi Waterlow , Alastair Clements, Chaelin Kim, Simon Procter, Gwen Knight ##
+##########################################################################################
+
+
 ### Data explore and clean 
 # Cleaning specific to ATLAS dataset
 # To use the tool for other data, own prep of data must be done

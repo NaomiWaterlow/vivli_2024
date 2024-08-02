@@ -1,16 +1,12 @@
-# load packages
-library(data.table)
-library(ggplot2)
-library(brms)
-library(boot)
-library(sjstats)
-library(gridExtra)
+####### August 2024 ######################################################################
+## Authors: Naomi Waterlow , Alastair Clements, Chaelin Kim, Simon Procter, Gwen Knight ##
+##########################################################################################
 
-model_to_run <- 3
+#model_to_run <- 3
 
 # Read in models and data
-model_files <- list.files(pattern = "BRMS_Models")
-model_list <- readRDS(model_files[model_to_run])
+model_files <- list.files(path= "fits/", pattern = "BRMS_Models")
+model_list <- readRDS(paste0("fits/",model_files[model_to_run]))
 input_data <- data.table(read.csv("data/combined_atlas.csv"))
 name_to_run <- names(model_list)
 
@@ -58,7 +54,6 @@ test_data <- data.table(age = rep(num_ages,2*length(num_countries)),
 
 
 ##!!! Need to run Combine_datas.R for this to work!! (sorry, messy)
-# (that script will have a warning about NAs, which is not a problem)
 test_data[country_data, on = c("country"), birth_rate := i.birth_rate]
 test_data[country_data, on = c("country"), c_section := i.c_section]
 test_data[is.na(c_section), c_section := mean_csection]
