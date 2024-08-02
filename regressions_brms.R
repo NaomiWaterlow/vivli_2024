@@ -21,8 +21,8 @@ input_data$age <- factor(input_data$age, levels = c("0 to 2 Years" ,
 
 input_data$c_section <- as.numeric(input_data$c_section)
 input_data$gender <- as.factor(input_data$gender)
-bug_specific <- unique_bugs[1]
-drug_specific <- unique_drugs[2]
+bug_specific <- unique_bugs[2]
+drug_specific <- unique_drugs[1]
 
 
 
@@ -59,7 +59,7 @@ drug_specific <- unique_drugs[2]
                     file_refit = getOption("brms.file_refit", "always"),
                     iter = 5000, save_pars = save_pars(all = TRUE))
     
-    Model_0 <- add_criterion(Model_0, criterion = "loo", 
+    Model_0 <- add_criterion(Model_0, criterion = "loo_subsample", 
                   file = paste0("fits/",bug_specific,"_",drug_specific, "_Model0"))
     
     print("Model 0 complete")
@@ -72,7 +72,7 @@ drug_specific <- unique_drugs[2]
                     file_refit = getOption("brms.file_refit", "always"),
                     iter = 5000, save_pars = save_pars(all = TRUE))
     
-    Model_1 <- add_criterion(Model_1, criterion = "loo", 
+    Model_1 <- add_criterion(Model_1, criterion = "loo_subsample", 
                   file = paste0("fits/",bug_specific,"_",drug_specific, "_Model1"))
     
     print("Model 1 complete")
@@ -84,7 +84,7 @@ drug_specific <- unique_drugs[2]
                    file_refit = getOption("brms.file_refit", "always"),
                    iter = 5000, save_pars = save_pars(all = TRUE))
     
-    Model_2 <- add_criterion(Model2, criterion = "loo", 
+    Model_2 <- add_criterion(Model2, criterion = "loo_subsample", 
                              file = paste0("fits/",bug_specific,"_",drug_specific, "_Model2"))
     # In this sample, adjusting for the impact of age, the odds of gender per country is.
     # We can calculate a country specific odds ratio of gender, but not an overall one. 
@@ -101,7 +101,7 @@ drug_specific <- unique_drugs[2]
                    file_refit = getOption("brms.file_refit", "always"),
                    iter = 5000, save_pars = save_pars(all = TRUE))
     
-    Model_3 <- add_criterion(Model_3, criterion = "loo", 
+    Model_3 <- add_criterion(Model_3, criterion = "loo_subsample", 
                              file = paste0("fits/",bug_specific,"_",drug_specific, "_Model3"))
 # e.g. adjusting for birth rate as well, does  country still have an impact?
     
