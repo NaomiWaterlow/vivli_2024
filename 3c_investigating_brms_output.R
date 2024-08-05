@@ -4,6 +4,7 @@
 
 #model_to_run <- 3
 
+
 # Read in models and data
 model_files <- list.files(path= "fits/", pattern = "BRMS_Models")
 model_list <- readRDS(paste0("fits/",model_files[model_to_run]))
@@ -31,8 +32,7 @@ input_data$c_section <- as.numeric(input_data$c_section)
 Model_0 <- model_list[[1]][[1]]
 Model_1 <- model_list[[1]][[2]]
 Model_2 <- model_list[[1]][[3]]
-Model_3 <- readRDS(paste0("fits/", bug_specific, "_",drug_specific, "_Model4.rds"))
-
+Model_3 <- model_list[[1]][[4]]
 
 #specify data subset
 data_subset <- input_data[species == bug_specific & 
@@ -105,22 +105,22 @@ MODEL_COMPARISON_SPLIT
 
 test_data[, variable := paste0("V", rownames(test_data))]
 
-temp0 <- as.data.table(fitted(Model_0, summary = F, newdata = test_data))[15000:20000]
+temp0 <- as.data.table(fitted(Model_0, summary = F, newdata = test_data))[1:10000]
 temp0$sample <- c(1:nrow(temp0))
 temp0m <- melt.data.table(temp0, id.vars = "sample")
 temp0m$Model <- 0
 
-temp1 <- as.data.table(fitted(Model_1, summary = F, newdata = test_data))[15000:20000]
+temp1 <- as.data.table(fitted(Model_1, summary = F, newdata = test_data))[1:10000]
 temp1$sample <- c(1:nrow(temp1))
 temp1m <- melt.data.table(temp1, id.vars = "sample")
 temp1m$Model <- 1
 
-temp2 <- as.data.table(fitted(Model_2, summary = F, newdata = test_data))[15000:20000]
+temp2 <- as.data.table(fitted(Model_2, summary = F, newdata = test_data))[1:10000]
 temp2$sample <- c(1:nrow(temp2))
 temp2m <- melt.data.table(temp2, id.vars = "sample")
 temp2m$Model <- 2
 
-temp3 <- as.data.table(fitted(Model_3, summary = F, newdata = test_data))[5000:10000]
+temp3 <- as.data.table(fitted(Model_3, summary = F, newdata = test_data))[1:10000]
 temp3$sample <- c(1:nrow(temp3))
 temp3m <- melt.data.table(temp3, id.vars = "sample")
 temp3m$Model <- 3
@@ -303,4 +303,14 @@ ggsave(paste0("plots/brms_",sub(" ", "_", bug_specific), "_", sub(" ", "_", drug
 ggsave(paste0("plots/covariates_brms_",sub(" ", "_", bug_specific), "_", sub(" ", "_", drug_specific),".pdf"),
        plot = grid.arrange(RANDOM_EFFECTS,FIXED_EFFECTS, ncol =2, layout_matrix = rbind(c(1,1,2))), 
        width = 10, height = 7)
+
+#### Model comparison #####
+
+loo_0 <- Model_0$criteria$loo_subsample
+loo_1 <- Model_1$criteria$loo_subsample
+loo_2 <- Model_2$criteria$loo_subsample
+loo_3 <- Model_3$criteria$loo_subsample
+print(bug_specific)
+print(drug_specific)
+print(loo_compare(loo_0, loo_1, loo_2, loo_3))
 

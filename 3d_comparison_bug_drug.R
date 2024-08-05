@@ -1,7 +1,9 @@
 ####### August 2024 ######################################################################
 ## Authors: Naomi Waterlow , Alastair Clements, Chaelin Kim, Simon Procter, Gwen Knight ##
 ##########################################################################################
-
+colours_friendly  <- c( "#E69F00", "#56B4E9", "#009E73",  "#CC79A7"
+                       , "#0072B2", "#D55E00","#661100" )
+scales::show_col(colours_friendly)
 
 # comparison across bugs of fixed effects
 
@@ -58,50 +60,63 @@ ALL_FIXED <- ggplot(all_fixed, aes(x = parameter_nice, y = Estimate, ymin = Q2.5
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1), 
         strip.background = element_blank(),
         strip.text.x = element_blank()) + 
+  scale_color_manual(values = c(colours_friendly[c(1:4)]))+
   labs(x = "parameter", y = "Estimate (95% CI)", colour = "Bacteria, antibiotic", 
        title = "Fixed effects")
 
 
 ##### 2. But we see variation in the country by Intercept, and also by slope (less).
 
+
 # Read in models and data
 model_files <- list.files(path = "output/", pattern = "random")
 all_random <- do.call('rbind', lapply(paste0("output/",model_files), readRDS))
 all_random <- data.table(all_random)
+
+all_random[bug == "Escherichia coli",bug_short := "E.coli"]
+all_random[bug == "Staphylococcus aureus",bug_short := "S.aureus"]
+
+all_random[drug == "ampicillin",drug_short := "amp."]
+all_random[drug == "levofloxacin",drug_short := "levo."]
+all_random[drug == "erythromycin",drug_short := "eryth."]
+
 
 temp <- all_random[Model ==2 & covariate == "Intercept" & drug == "levofloxacin" & 
                      bug == "Staphylococcus aureus"]
 country_order <- temp[order(Estimate)]$parameter
 all_random[,parameter := factor(parameter, levels = country_order)]
 
-GENDER_RANDOM <- ggplot(all_random[Model ==2 & covariate == "genderm"], aes(x = parameter, y = Estimate, ymin = Q25, 
-                       ymax = Q975, colour = drug)) + 
+GENDER_RANDOM <- ggplot(all_random[Model ==2 & covariate == "genderm"],
+                        aes(x = parameter, y = Estimate, ymin = Q25, 
+                       ymax = Q975, colour = drug_short)) + 
          geom_pointrange(position = position_dodge2(width = 0.7)) +
-  facet_grid(bug+drug~covariate) + 
+  facet_grid(bug_short+drug_short~covariate) + 
   theme_bw() + 
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1), 
         strip.background = element_blank(),
         strip.text.x = element_blank()) + 
   labs(x = "country", y = "Estimate (95% CI)", colour = "Antibiotic", 
        title = "Random effects (gender) - Model 2") + 
+  scale_color_manual(values = colours_friendly[c(5:7)])+
   geom_hline(yintercept = 0, linetype = "dashed")
 
 INTERCEPT_RANDOM <- ggplot(all_random[Model ==2 & covariate == "Intercept"], aes(x = parameter, y = Estimate, ymin = Q25, 
-                                                                            ymax = Q975, colour = drug)) + 
+                                                                            ymax = Q975, colour = drug_short)) + 
   geom_pointrange(position = position_dodge2(width = 0.7)) +
-  facet_grid(bug+drug~covariate) + 
+  facet_grid(bug_short+drug_short~covariate) + 
   theme_bw() + 
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1), 
         strip.background = element_blank(),
         strip.text.x = element_blank()) + 
   labs(x = "country", y = "Estimate (95% CI)", colour = "Antibiotic", 
        title = "Random effects (Intercept) - Model 2") + 
+  scale_color_manual(values = colours_friendly[c(5:7)])+
   geom_hline(yintercept = 0, linetype = "dashed")
 
 grid.arrange(ALL_FIXED, GENDER_RANDOM, INTERCEPT_RANDOM, layout_matrix = rbind(c(1,2), 
                                                                                c(1,3)))
 
-
+leg <- get_legend(GENDER_RANDOM)
 # 3. birth rate may allow us to explain some of the country specific variation, 
 # but not the gender slope. 
 
@@ -121,9 +136,12 @@ ggplot(var_all, aes(x = bug_drug, y = Estimate, ymin = Q2.5, ymax = Q97.5,
 var_summarised <- dcast.data.table(var_all, variable + bug + drug + bug_drug ~ Model, value.var = "Estimate")
 var_summarised[,perc_change :=( (`Model 3` - `Model 2`)/ `Model 3`)*100]
 
-ggsave(paste0("plots/figure_",sub(" ", "_", bug_specific), "_", sub(" ", "_", drug_specific),".pdf"),
-       plot =grid.arrange(ALL_FIXED, INTERCEPT_RANDOM, GENDER_RANDOM, layout_matrix = rbind(c(1,2), 
-                                                                                            c(1,3))), 
+ggsave(paste0("plots/figure.pdf"),
+       plot =grid.arrange(ALL_FIXED, INTERCEPT_RANDOM + theme(legend.position = "none"),
+                          GENDER_RANDOM + theme(legend.position = "none"), 
+                          leg
+                          ,layout_matrix = rbind(c(1,1,1,1,1,2,2,2,2,4),
+                                                c(1,1,1,1,1,3,3,3,3,4))), 
        width = 18, height = 10)
 
 
