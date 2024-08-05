@@ -1,8 +1,8 @@
 ####### August 2024 ######################################################################
 ## Authors: Naomi Waterlow , Alastair Clements, Chaelin Kim, Simon Procter, Gwen Knight ##
 ##########################################################################################
-colours_friendly  <- c( "#E69F00", "#56B4E9", "#009E73",  "#CC79A7"
-                       , "#0072B2", "#D55E00","#661100" )
+colours_friendly  <- c( "#E69F00", "#D55E00", "#56B4E9", "#009E73"
+                       ,    "#CC79A7","#0072B2","#661100" )
 scales::show_col(colours_friendly)
 
 # comparison across bugs of fixed effects
@@ -62,7 +62,7 @@ ALL_FIXED <- ggplot(all_fixed, aes(x = parameter_nice, y = Estimate, ymin = Q2.5
         strip.text.x = element_blank()) + 
   scale_color_manual(values = c(colours_friendly[c(1:4)]))+
   labs(x = "parameter", y = "Estimate (95% CI)", colour = "Bacteria, antibiotic", 
-       title = "Fixed effects")
+       title = "A: Fixed effects")
 
 
 ##### 2. But we see variation in the country by Intercept, and also by slope (less).
@@ -96,7 +96,7 @@ GENDER_RANDOM <- ggplot(all_random[Model ==2 & covariate == "genderm"],
         strip.background = element_blank(),
         strip.text.x = element_blank()) + 
   labs(x = "country", y = "Estimate (95% CI)", colour = "Antibiotic", 
-       title = "Random effects (gender) - Model 2") + 
+       title = "C: Random effects (gender) - Model 2") + 
   scale_color_manual(values = colours_friendly[c(5:7)])+
   geom_hline(yintercept = 0, linetype = "dashed")
 
@@ -109,7 +109,7 @@ INTERCEPT_RANDOM <- ggplot(all_random[Model ==2 & covariate == "Intercept"], aes
         strip.background = element_blank(),
         strip.text.x = element_blank()) + 
   labs(x = "country", y = "Estimate (95% CI)", colour = "Antibiotic", 
-       title = "Random effects (Intercept) - Model 2") + 
+       title = "B: Random effects (Intercept) - Model 2") + 
   scale_color_manual(values = colours_friendly[c(5:7)])+
   geom_hline(yintercept = 0, linetype = "dashed")
 

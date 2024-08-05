@@ -71,7 +71,7 @@ if(!file.exists("plots/maps")){dir.create(file.path("plots/maps"))}
 #big_data$age <- factor(big_data$age, 
 #                                   levels = c("0 to 2 Years", "3 to 12 Years", "13 to 18 Years", "19 to 64 Years", 
 #  "65 to 84 Years", "85 and Over", "Unknown"))
-
+map_counter <- 0
 # Generate the maps
 for(i in drugs){
   for(j in bugs){
@@ -81,7 +81,7 @@ for(i in drugs){
     
     if(dim(data_grab %>% filter(!is.na(ratio)))[1] > 10){ # if data from at least 10 sub-populations
       
-      ggplot(data_grab, 
+    PLOT_TEMP <-   ggplot(data_grab, 
              aes(map_id = region)) + 
         geom_map(aes(fill = ratio), map = worldMap, 
                  color='grey66', size=0.3) + 
@@ -99,10 +99,32 @@ for(i in drugs){
                              name="Relative proportion (log) in women vs men",
                              na.value="grey88") +
         guides(fill = guide_colorbar(barwidth = 10, barheight = .5))
+    
+    map_counter <- map_counter +1
+    assign(paste0("MAP_", map_counter), PLOT_TEMP)
       ggsave(paste0("plots/maps/map_",i,"_",j,".pdf"))
     }
   }    
 }
+
+leg <- get_legend(MAP_1)
+COMBINED_MAPS <- grid.arrange(MAP_1 + theme(legend.position = "none"),
+             MAP_2 + theme(legend.position = "none"),
+             MAP_3 + theme(legend.position = "none"),
+             MAP_4 + theme(legend.position = "none"), 
+             leg, 
+             layout_matrix = rbind(c(1,1,1,2,2,2),
+                                   c(1,1,1,2,2,2),
+                                   c(1,1,1,2,2,2),
+                                   c(1,1,1,2,2,2),
+                                   c(3,3,3,4,4,4),
+                                   c(3,3,3,4,4,4),
+                                   c(3,3,3,4,4,4),
+                                   c(3,3,3,4,4,4),
+                                   c(5,5,5,5,5,5)))
+
+ggsave(paste0("plots/maps/combined_map.pdf"), plot = COMBINED_MAPS, 
+       width = 10, height = 7)
 
 ## Add in income group 
 key <- read.csv("data/country_maps.csv") 
