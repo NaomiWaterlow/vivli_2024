@@ -1,0 +1,190 @@
+﻿region,country_code,region_nat,income_group
+Afghanistan,AFG,South Asia,Low
+Albania,ALB,Europe and Central Asia,Upper middle
+Algeria,DZA,Middle East and North Africa,Upper middle
+Angola,AGO,Sub-Saharan Africa,Lower middle
+Antigua and Barbuda,ATG,Latin America and the Caribbean,High
+Argentina,ARG,Latin America and the Caribbean,Upper middle
+Armenia,ARM,Europe and Central Asia,Lower middle
+Australia,AUS,OECD,High
+Austria,AUT,OECD,High
+Azerbaijan,AZE,Europe and Central Asia,Upper middle
+Bahamas,BHS,Latin America and the Caribbean,High
+Bahrain,BHR,Middle East and North Africa,High
+Bangladesh,BGD,South Asia,Lower middle
+Barbados,BRB,Latin America and the Caribbean,High
+Belarus,BLR,Europe and Central Asia,Upper middle
+Belgium,BEL,OECD,High
+Belize,BLZ,Latin America and the Caribbean,Upper middle
+Benin,BEN,Sub-Saharan Africa,Low
+Bhutan,BTN,South Asia,Lower middle
+Bolivia,BOL,Latin America and the Caribbean,Lower middle
+Bosnia and Herzegovina,BIH,Europe and Central Asia,Upper middle
+Botswana,BWA,Sub-Saharan Africa,Upper middle
+Brazil,BRA,Latin America and the Caribbean,Upper middle
+Brunei,BRN,East Asia and the Pacific,High
+Bulgaria,BGR,Europe and Central Asia,Upper middle
+Burkina Faso,BFA,Sub-Saharan Africa,Low
+Burundi,BDI,Sub-Saharan Africa,Low
+Cambodia,KHM,East Asia and the Pacific,Lower middle
+Cameroon,CMR,Sub-Saharan Africa,Lower middle
+Canada,CAN,OECD,High
+Cape Verde,CPV,Sub-Saharan Africa,Lower middle
+Central African Republic,CAF,Sub-Saharan Africa,Low
+Chad,TCD,Sub-Saharan Africa,Low
+Chile,CHL,OECD,High
+China,CHN,East Asia and the Pacific,Upper middle
+Colombia,COL,Latin America and the Caribbean,Upper middle
+Comoros,COM,Sub-Saharan Africa,Low
+Costa Rica,CRI,Latin America and the Caribbean,Upper middle
+Croatia,HRV,Europe and Central Asia,Upper middle
+Cyprus,CYP,Europe and Central Asia,High
+Czech Republic,CZE,OECD,High
+Democratic Republic of Congo,ZAR,Sub-Saharan Africa,Low
+Denmark,DNK,OECD,High
+Djibouti,DJI,Middle East and North Africa,Lower middle
+Dominica,DMA,Latin America and the Caribbean,Upper middle
+Dominican Republic,DOM,Latin America and the Caribbean,Upper middle
+East Timor,TMP,East Asia and the Pacific,Lower middle
+Ecuador,ECU,Latin America and the Caribbean,Upper middle
+Egypt,EGY,Middle East and North Africa,Lower middle
+El Salvador,SLV,Latin America and the Caribbean,Lower middle
+Equatorial Guinea,GNQ,Sub-Saharan Africa,Upper middle
+Eritrea,ERI,Sub-Saharan Africa,Low
+Estonia,EST,OECD,High
+Eswatini,SWZ,Sub-Saharan Africa,Lower middle
+Ethiopia,ETH,Sub-Saharan Africa,Low
+Fiji,FJI,East Asia and the Pacific,Upper middle
+Finland,FIN,OECD,High
+France,FRA,OECD,High
+Gabon,GAB,Sub-Saharan Africa,Upper middle
+Gambia,GMB,Sub-Saharan Africa,Low
+Georgia,GEO,Europe and Central Asia,Lower middle
+Germany,DEU,OECD,High
+Ghana,GHA,Sub-Saharan Africa,Lower middle
+Greece,GRC,OECD,High
+Grenada,GRD,Latin America and the Caribbean,Upper middle
+Guatemala,GTM,Latin America and the Caribbean,Lower middle
+Guinea,GIN,Sub-Saharan Africa,Low
+Guinea-Bissau,GNB,Sub-Saharan Africa,Low
+Guyana,GUY,Latin America and the Caribbean,Upper middle
+Haiti,HTI,Latin America and the Caribbean,Low
+Honduras,HND,Latin America and the Caribbean,Lower middle
+Hong Kong,HKG,East Asia and the Pacific,High
+Hungary,HUN,OECD,High
+Iceland,ISL,OECD,High
+India,IND,South Asia,Lower middle
+Indonesia,IDN,East Asia and the Pacific,Lower middle
+Iran,IRN,Middle East and North Africa,Upper middle
+Iraq,IRQ,Middle East and North Africa,Upper middle
+Ireland,IRL,OECD,High
+Israel,ISR,OECD,High
+Italy,ITA,OECD,High
+Ivory Coast,CIV,Sub-Saharan Africa,Lower middle
+Jamaica,JAM,Latin America and the Caribbean,Upper middle
+Japan,JPN,OECD,High
+Jordan,JOR,Middle East and North Africa,Lower middle
+Kazakhstan,KAZ,Europe and Central Asia,Upper middle
+Kenya,KEN,Sub-Saharan Africa,Lower middle
+Kiribati,KIR,East Asia and the Pacific,Lower middle
+Kosovo,KSV,Europe and Central Asia,Lower middle
+Kuwait,KWT,Middle East and North Africa,High
+Kyrgyzstan,KGZ,Europe and Central Asia,Lower middle
+Laos,LAO,East Asia and the Pacific,Lower middle
+Latvia,LVA,Europe and Central Asia,High
+Lebanon,LBN,Middle East and North Africa,Upper middle
+Lesotho,LSO,Sub-Saharan Africa,Lower middle
+Liberia,LBR,Sub-Saharan Africa,Low
+Libya,LBY,Middle East and North Africa,Upper middle
+Lithuania,LTU,Europe and Central Asia,High
+Luxembourg,LUX,OECD,High
+Macedonia,MKD,Europe and Central Asia,Upper middle
+Madagascar,MDG,Sub-Saharan Africa,Low
+Malawi,MWI,Sub-Saharan Africa,Low
+Malaysia,MYS,East Asia and the Pacific,Upper middle
+Maldives,MDV,South Asia,Upper middle
+Mali,MLI,Sub-Saharan Africa,Low
+Malta,MLT,Middle East and North Africa,High
+Marshall Islands,MHL,East Asia and the Pacific,Upper middle
+Mauritania,MRT,Sub-Saharan Africa,Lower middle
+Mauritius,MUS,Sub-Saharan Africa,Upper middle
+Mexico,MEX,Latin America and the Caribbean,Upper middle
+Micronesia,FSM,East Asia and the Pacific,Lower middle
+Moldova,MDA,Europe and Central Asia,Lower middle
+Mongolia,MNG,East Asia and the Pacific,Lower middle
+Montenegro,MNE,Europe and Central Asia,Upper middle
+Morocco,MAR,Middle East and North Africa,Lower middle
+Mozambique,MOZ,Sub-Saharan Africa,Low
+Myanmar,MMR,East Asia and the Pacific,Lower middle
+Namibia,NAM,Sub-Saharan Africa,Upper middle
+Nepal,NPL,South Asia,Low
+Netherlands,NLD,OECD,High
+New Zealand,NZL,OECD,High
+Nicaragua,NIC,Latin America and the Caribbean,Lower middle
+Niger,NER,Sub-Saharan Africa,Low
+Nigeria,NGA,Sub-Saharan Africa,Lower middle
+Norway,NOR,OECD,High
+Oman,OMN,Middle East and North Africa,High
+Pakistan,PAK,South Asia,Lower middle
+Palau,PLW,East Asia and the Pacific,High
+Palestinian Territories,WBG,Middle East and North Africa,Lower middle
+Panama,PAN,Latin America and the Caribbean,Upper middle
+Papua New Guinea,PNG,East Asia and the Pacific,Lower middle
+Paraguay,PRY,Latin America and the Caribbean,Upper middle
+Peru,PER,Latin America and the Caribbean,Upper middle
+Philippines,PHL,East Asia and the Pacific,Lower middle
+Poland,POL,OECD,High
+Portugal,PRT,OECD,High
+Puerto Rico,PRI,Latin America and the Caribbean,High
+Qatar,QAT,Middle East and North Africa,High
+Republic of Congo,COG,Sub-Saharan Africa,Lower middle
+Romania,ROM,Europe and Central Asia,Upper middle
+Russia,RUS,Europe and Central Asia,Upper middle
+Rwanda,RWA,Sub-Saharan Africa,Low
+Saint Kitts and Nevis,KNA,Latin America and the Caribbean,High
+Saint Lucia,LCA,Latin America and the Caribbean,Upper middle
+Saint Vincent and the Grenadines,VCT,Latin America and the Caribbean,Upper middle
+Samoa,WSM,East Asia and the Pacific,Upper middle
+San Marino,SMR,Europe and Central Asia,High
+Sao Tome and Principe,STP,Sub-Saharan Africa,Lower middle
+Saudi Arabia,SAU,Middle East and North Africa,High
+Senegal,SEN,Sub-Saharan Africa,Low
+Serbia,SRB,Europe and Central Asia,Upper middle
+Seychelles,SYC,Sub-Saharan Africa,High
+Sierra Leone,SLE,Sub-Saharan Africa,Low
+Singapore,SGP,East Asia and the Pacific,High
+Slovak Republic,SVK,OECD,High
+Slovenia,SVN,OECD,High
+Solomon Islands,SLB,East Asia and the Pacific,Lower middle
+South Africa,ZAF,Sub-Saharan Africa,Upper middle
+"Korea, South",KOR,OECD,High
+South Sudan,SSD,Sub-Saharan Africa,Low
+Spain,ESP,OECD,High
+Sri Lanka,LKA,South Asia,Lower middle
+Sudan,SDN,Sub-Saharan Africa,Lower middle
+Suriname,SUR,Latin America and the Caribbean,Upper middle
+Sweden,SWE,OECD,High
+Switzerland,CHE,OECD,High
+Syria,SYR,Middle East and North Africa,Lower middle
+Taiwan,TWN,East Asia and the Pacific,High
+Tajikistan,TJK,Europe and Central Asia,Lower middle
+Tanzania,TZA,Sub-Saharan Africa,Low
+Thailand,THA,East Asia and the Pacific,Upper middle
+Togo,TGO,Sub-Saharan Africa,Low
+Tonga,TON,East Asia and the Pacific,Upper middle
+Trinidad and Tobago,TTO,Latin America and the Caribbean,High
+Tunisia,TUN,Middle East and North Africa,Lower middle
+Turkey,TUR,Europe and Central Asia,Upper middle
+Uganda,UGA,Sub-Saharan Africa,Low
+Ukraine,UKR,Europe and Central Asia,Lower middle
+United Arab Emirates,ARE,Middle East and North Africa,High
+United Kingdom,GBR,OECD,High
+United States,USA,OECD,High
+Uruguay,URY,Latin America and the Caribbean,High
+Uzbekistan,UZB,Europe and Central Asia,Lower middle
+Vanuatu,VUT,East Asia and the Pacific,Lower middle
+Venezuela,VEN,Latin America and the Caribbean,Upper middle
+Vietnam,VNM,East Asia and the Pacific,Lower middle
+Yemen,YEM,Middle East and North Africa,Lower middle
+Zambia,ZMB,Sub-Saharan Africa,Lower middle
+Zimbabwe,ZWE,Sub-Saharan Africa,Low
