@@ -1,15 +1,5 @@
 # vivli_2024
 
-Working Progress
+This repository contains all the code required to run the submission to Vivli 2024 competition. 
 
-
-To run: 
-
-- Need a folder called data, which contains the atlas data. And a folder called Other_data that contains the data from other sources (this was created using the other_data.R)
-
--> run 0_data_cleaning_atlas.R
-
--> combine_datasets.R (adds data from other sources)
-
--> then run_regresssions.R. This take a long time but creates all the models and saves them. 
-
+The analysis can be run from the script 0_run_analysis.R
