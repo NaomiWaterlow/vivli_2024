@@ -81,15 +81,16 @@ for(i in drugs){
     
     if(dim(data_grab %>% filter(!is.na(ratio)))[1] > 10){ # if data from at least 10 sub-populations
       
+      
+      
+      
     PLOT_TEMP <-   ggplot(data_grab, 
              aes(map_id = region)) + 
         geom_map(aes(fill = ratio), map = worldMap, 
                  color='grey66', size=0.3) + 
         expand_limits(x = worldMap$long, y = worldMap$lat) +
- #       facet_wrap(~age) + 
         theme_few()+
-        ggtitle(paste0(i, " resistance in ", j)) + 
-        #ggtitle(expression(i~" resistance in "~italic(j))) + 
+      ggtitle(bquote(.(i) ~ "resistance in" ~ italic(.(j)))) + 
         theme(legend.position = "bottom",
               axis.ticks = element_blank(), 
               axis.title = element_blank(), 
@@ -117,6 +118,8 @@ COMBINED_MAPS <- grid.arrange(MAP_1 + theme(legend.position = "none"),
                                    c(1,1,1,2,2,2),
                                    c(1,1,1,2,2,2),
                                    c(1,1,1,2,2,2),
+                                   c(1,1,1,2,2,2),
+                                   c(3,3,3,4,4,4),
                                    c(3,3,3,4,4,4),
                                    c(3,3,3,4,4,4),
                                    c(3,3,3,4,4,4),
@@ -124,7 +127,7 @@ COMBINED_MAPS <- grid.arrange(MAP_1 + theme(legend.position = "none"),
                                    c(5,5,5,5,5,5)))
 
 ggsave(paste0("plots/maps/combined_map.pdf"), plot = COMBINED_MAPS, 
-       width = 10, height = 7)
+       width = 10, height = 6)
 
 ## Add in income group 
 key <- read.csv("data/country_maps.csv") 

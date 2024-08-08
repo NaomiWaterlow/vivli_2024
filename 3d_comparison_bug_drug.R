@@ -42,7 +42,9 @@ all_fixed[, parameter_nice := factor(parameter_nice, levels = c(
   "Age 85+", "birth rate", "Male : birth rate", "c-section rate", "Male : c-section rate"
 ))]
 
-all_fixed[,bug_drug := paste0(bug, ", ", drug)]
+all_fixed[, bug_drug := paste0(bug, ",\n", drug)]
+all_fixed[, bug_drug := str_replace(bug_drug,"Staphylococcus", "S.")]
+all_fixed[, bug_drug := str_replace(bug_drug,"Escherichia", "E.")]
 
 all_fixed[parameter %in% c("age13to18Years", "age19to64Years", 
                            "age3to12Years", "age65to84Years", "age85andOver"), grouping := "ages"]
@@ -59,7 +61,8 @@ ALL_FIXED <- ggplot(all_fixed, aes(x = parameter_nice, y = Estimate, ymin = Q2.5
   facet_grid(.~grouping, scale = "free",space = "free_x")+
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1), 
         strip.background = element_blank(),
-        strip.text.x = element_blank()) + 
+        strip.text.x = element_blank(), 
+        legend.spacing.y = unit(2,  "pt") ) + 
   scale_color_manual(values = c(colours_friendly[c(1:4)]))+
   labs(x = "parameter", y = "Estimate (95% CI)", colour = "Bacteria, antibiotic", 
        title = "A: Fixed effects")
@@ -140,9 +143,9 @@ ggsave(paste0("plots/figure.pdf"),
        plot =grid.arrange(ALL_FIXED, INTERCEPT_RANDOM + theme(legend.position = "none"),
                           GENDER_RANDOM + theme(legend.position = "none"), 
                           leg
-                          ,layout_matrix = rbind(c(1,1,1,1,1,2,2,2,2,4),
-                                                c(1,1,1,1,1,3,3,3,3,4))), 
-       width = 18, height = 10)
+                          ,layout_matrix = rbind(c(1,1,1,1,1,1,1,2,2,2,2,2,4),
+                                                c(1,1,1,1,1,1,1,3,3,3,3,3,4))), 
+       width = 13, height = 7)
 
 
 
