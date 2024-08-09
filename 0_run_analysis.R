@@ -14,6 +14,7 @@ library(boot)
 library(sjstats)
 library(gridExtra)
 library(ggpubr)
+library(stringr)
 
 #### LOAD AND CLEAN ####
 

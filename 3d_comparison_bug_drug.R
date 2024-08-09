@@ -143,9 +143,9 @@ ggsave(paste0("plots/figure.pdf"),
        plot =grid.arrange(ALL_FIXED, INTERCEPT_RANDOM + theme(legend.position = "none"),
                           GENDER_RANDOM + theme(legend.position = "none"), 
                           leg
-                          ,layout_matrix = rbind(c(1,1,1,1,1,1,1,2,2,2,2,2,4),
-                                                c(1,1,1,1,1,1,1,3,3,3,3,3,4))), 
-       width = 13, height = 7)
+                          ,layout_matrix = rbind(c(1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,4),
+                                                c(1,1,1,1,1,1,1,1,1,3,3,3,3,3,3,3,4))), 
+       width = 13, height = 9)
 
 
 
